@@ -1,6 +1,6 @@
 import 'package:objectbox/objectbox.dart';
 import 'package:stud_attain_minor_pro/model/student_model.dart';
-import 'package:stud_attain_minor_pro/model/subject_mode.dart';
+import 'package:stud_attain_minor_pro/model/subject_model.dart';
 
 @Entity()
 class ClassModel {

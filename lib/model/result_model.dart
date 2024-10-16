@@ -1,5 +1,9 @@
 import 'dart:convert';
 import 'package:objectbox/objectbox.dart';
+import 'class_model.dart'; // Import ClassModel
+import 'subject_model.dart'; // Import SubjectModel
+import 'student_model.dart'; // Import StudentModel
+import 'exam_model.dart'; // Import ExamModel
 
 @Entity()
 class Result {
@@ -9,13 +13,26 @@ class Result {
   String resultID;
 
   @Property()
-  int studentId;
+  int studentId; // Reference to the student
 
   @Property()
-  int examId;
+  int examId; // Reference to the exam
 
   @Property()
-  String marksJson;  // Store as a JSON string
+  String marksJson; // Store marks as a JSON string
+
+  @Property()
+  String subjectId;
+
+  @Property()
+  String classId;
+
+
+
+  // Relations
+  final subjectRelation = ToOne<Subject>(); // Many-to-one relation to Subject
+  final classRelation = ToOne<ClassModel>(); // Many-to-one relation to ClassModel
+  final studentRelation = ToOne<Student>(); // Many-to-one relation to Student
 
   Result({
     this.id = 0,
@@ -23,7 +40,9 @@ class Result {
     required this.studentId,
     required this.examId,
     List<List<int>>? marks,
-  }) : marksJson = _encodeMarks(marks);
+  required this.subjectId,
+  required this.classId,
+  })  : marksJson = _encodeMarks(marks);
 
   // Getter for marks
   List<List<int>> get marks => _decodeMarks(marksJson);
@@ -58,16 +77,16 @@ class Result {
 
   // Optional: Add a method to easily add new marks
   void addMark(int index, int mark) {
-    final currentMarks = this.marks;
+    final currentMarks = marks;
     if (index >= 0 && index < currentMarks.length) {
       currentMarks[index].add(mark);
-      this.marks = currentMarks;
+      marks = currentMarks;
     }
   }
 
   // Optional: Add a method to get marks for a specific index
   List<int> getMarksAt(int index) {
-    final currentMarks = this.marks;
+    final currentMarks = marks;
     if (index >= 0 && index < currentMarks.length) {
       return List<int>.from(currentMarks[index]);
     }

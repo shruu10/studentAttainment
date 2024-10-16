@@ -3,11 +3,21 @@ import 'package:flutter/material.dart';
 class ResultProvider extends ChangeNotifier {
   String formattedData = '';
   List<List<TextEditingController>> controllers = [];
+  List<int> totals = []; // List to store totals for each row
+
 
   // Function to update formatted data and notify listeners
   void updateFormattedData(String value) {
     formattedData = formatToSingleLine(value);
     populateTableData(formattedData);
+    notifyListeners();
+  }
+
+  void calculateInitialTotals() {
+    totals = List.generate(controllers.length, (index) => 0);
+    for (int rowIndex = 0; rowIndex < controllers.length; rowIndex++) {
+      calculateRowTotal(rowIndex);
+    }
     notifyListeners();
   }
 

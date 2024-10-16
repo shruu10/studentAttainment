@@ -1,9 +1,16 @@
-
-// SelectPage with Dropdowns for class and exam
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // Provider for state management
+import 'package:stud_attain_minor_pro/pages/class_page.dart';
+import 'package:stud_attain_minor_pro/pages/exam_page.dart';
+import 'package:stud_attain_minor_pro/pages/home.dart';
+import 'package:stud_attain_minor_pro/pages/student_page.dart';
+import 'package:stud_attain_minor_pro/pages/subject_page.dart';
+import 'package:stud_attain_minor_pro/model/class_model.dart';
+import 'package:stud_attain_minor_pro/model/exam_model.dart';
+import 'package:stud_attain_minor_pro/model/subject_model.dart';
 
-import 'pages/home.dart';
+import 'controller/db_provider.dart';
 
 class SelectPage extends StatefulWidget {
   const SelectPage({super.key});
@@ -13,17 +20,75 @@ class SelectPage extends StatefulWidget {
 }
 
 class SelectPageState extends State<SelectPage> {
-  String selectedClass = 'MCA1';
-  String selectedExam = 'EXAM 1';
+  ClassModel? selectedClass;
+  Exam? selectedExam;
+  Subject? selectedSubject;
 
-  final List<String> classValues = ['MCA1', 'BTECH 1', 'MCA 2'];
-  final List<String> examValues = ['EXAM 1', 'EXAM 2'];
+  List<ClassModel> classValues = [];
+  List<Exam> examValues = [];
+  List<Subject> subjectValues = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch the data from the database when the widget is initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final databaseProvider = Provider.of<DatabaseProvider>(context, listen: false);
+      _fetchData(databaseProvider);
+    });
+  }
+
+  // Fetch the data from the database
+  void _fetchData(DatabaseProvider databaseProvider) {
+    setState(() {
+      classValues = databaseProvider.getAllClasses();
+      examValues = databaseProvider.getAllExams();
+      subjectValues = databaseProvider.getAllSubjects();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(" ", style: TextStyle(color: Colors.white, fontSize: 24)),
+            ),
+            ListTile(
+              title: const Text('Classes'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const ClassPage()));
+              },
+            ),
+            ListTile(
+              title: const Text('Subjects'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const SubjectCRUDPage()));
+              },
+            ),
+            ListTile(
+              title: const Text('Exams'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const ExamCRUDPage()));
+              },
+            ),
+            ListTile(
+              title: const Text('Students'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const StudentCRUDPage()));
+              },
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
-        title: const Text("Select Class and Exam"),
+        title: const Text("Select Class, Exam, and Subject"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -32,41 +97,61 @@ class SelectPageState extends State<SelectPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Dropdown for selecting class
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<ClassModel>(
               value: selectedClass,
               decoration: const InputDecoration(
                 labelText: "Select Class",
                 border: OutlineInputBorder(),
               ),
-              items: classValues.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
+              items: classValues.map((ClassModel classModel) {
+                return DropdownMenuItem<ClassModel>(
+                  value: classModel,
+                  child: Text(classModel.className),
                 );
               }).toList(),
-              onChanged: (String? newValue) {
+              onChanged: (ClassModel? newValue) {
                 setState(() {
-                  selectedClass = newValue!;
+                  selectedClass = newValue;
                 });
               },
             ),
             const SizedBox(height: 20),
             // Dropdown for selecting exam
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<Exam>(
               value: selectedExam,
               decoration: const InputDecoration(
                 labelText: "Select Exam",
                 border: OutlineInputBorder(),
               ),
-              items: examValues.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
+              items: examValues.map((Exam exam) {
+                return DropdownMenuItem<Exam>(
+                  value: exam,
+                  child: Text(exam.examID),
                 );
               }).toList(),
-              onChanged: (String? newValue) {
+              onChanged: (Exam? newValue) {
                 setState(() {
-                  selectedExam = newValue!;
+                  selectedExam = newValue;
+                });
+              },
+            ),
+            const SizedBox(height: 20),
+            // Dropdown for selecting subject
+            DropdownButtonFormField<Subject>(
+              value: selectedSubject,
+              decoration: const InputDecoration(
+                labelText: "Select Subject",
+                border: OutlineInputBorder(),
+              ),
+              items: subjectValues.map((Subject subject) {
+                return DropdownMenuItem<Subject>(
+                  value: subject,
+                  child: Text(subject.subjectName),
+                );
+              }).toList(),
+              onChanged: (Subject? newValue) {
+                setState(() {
+                  selectedSubject = newValue;
                 });
               },
             ),
@@ -74,7 +159,7 @@ class SelectPageState extends State<SelectPage> {
             // Submit button
             ElevatedButton(
               onPressed: () {
-                // Navigate to HomePage on submit
+                // Handle submission logic here
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

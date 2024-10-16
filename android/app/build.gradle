@@ -25,7 +25,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.example.stud_attain_minor_pro"
-    compileSdk = 33 // Set this value manually
+    compileSdk = 34 // Set this value manually
 
     ndkVersion = "23.1.7779620" // Set this if needed or use the Flutter NDK version
 

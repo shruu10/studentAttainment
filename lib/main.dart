@@ -3,7 +3,11 @@ import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 import 'package:provider/provider.dart';
 import 'package:stud_attain_minor_pro/controller/result_provider.dart';
 import 'package:stud_attain_minor_pro/model/objectbox_store.dart';
+import 'package:stud_attain_minor_pro/pages/home.dart';
+import 'package:stud_attain_minor_pro/pages/home_list.dart';
 import 'package:stud_attain_minor_pro/selectWidget.dart';
+
+import 'controller/db_provider.dart';
 
 
 late ObjectBox objectbox;
@@ -25,13 +29,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ResultProvider())
+        ChangeNotifierProvider(create: (context) => ResultProvider()),
+        ChangeNotifierProvider(create: (BuildContext context) => DatabaseProvider(objectbox.store))
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+          // useMaterial3: true,
         ),
         home: const SelectPage(),
       ),

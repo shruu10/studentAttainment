@@ -42,7 +42,7 @@
     },
     {
       "id": "2:4240947466676987661",
-      "lastPropertyId": "4:8803990178385988372",
+      "lastPropertyId": "8:907065268397318414",
       "name": "Exam",
       "properties": [
         {
@@ -64,9 +64,30 @@
           "type": 9
         },
         {
-          "id": "4:8803990178385988372",
+          "id": "5:1392486143892457501",
+          "name": "subjectRelationId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "6:637092123362249792",
+          "relationTarget": "Subject"
+        },
+        {
+          "id": "6:6326410434559639483",
+          "name": "classRelationId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "7:1294875051994019043",
+          "relationTarget": "ClassModel"
+        },
+        {
+          "id": "7:8127231044769572273",
           "name": "subjectId",
-          "type": 6
+          "type": 9
+        },
+        {
+          "id": "8:907065268397318414",
+          "name": "classId",
+          "type": 9
         }
       ],
       "relations": [
@@ -79,7 +100,7 @@
     },
     {
       "id": "3:2122912694261922191",
-      "lastPropertyId": "5:3270302831683871918",
+      "lastPropertyId": "10:1055005393549539642",
       "name": "Result",
       "properties": [
         {
@@ -109,13 +130,47 @@
           "id": "5:3270302831683871918",
           "name": "marksJson",
           "type": 9
+        },
+        {
+          "id": "6:245176516753601821",
+          "name": "subjectRelationId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "8:2884068924956536533",
+          "relationTarget": "Subject"
+        },
+        {
+          "id": "7:7098093932686256358",
+          "name": "classRelationId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "9:865633332150397112",
+          "relationTarget": "ClassModel"
+        },
+        {
+          "id": "8:290114917244638443",
+          "name": "studentRelationId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "10:7311640072115044153",
+          "relationTarget": "Student"
+        },
+        {
+          "id": "9:3903931810567838957",
+          "name": "subjectId",
+          "type": 9
+        },
+        {
+          "id": "10:1055005393549539642",
+          "name": "classId",
+          "type": 9
         }
       ],
       "relations": []
     },
     {
       "id": "4:694201165520271826",
-      "lastPropertyId": "4:5354813011484784613",
+      "lastPropertyId": "5:3376629945168078003",
       "name": "Student",
       "properties": [
         {
@@ -140,6 +195,11 @@
           "id": "4:5354813011484784613",
           "name": "studentName",
           "type": 9
+        },
+        {
+          "id": "5:3376629945168078003",
+          "name": "classId",
+          "type": 6
         }
       ],
       "relations": [
@@ -147,12 +207,17 @@
           "id": "4:599563247502765828",
           "name": "results",
           "targetId": "3:2122912694261922191"
+        },
+        {
+          "id": "6:6776949172144395563",
+          "name": "subjects",
+          "targetId": "5:5168867376406878954"
         }
       ]
     },
     {
       "id": "5:5168867376406878954",
-      "lastPropertyId": "3:5800660077900968037",
+      "lastPropertyId": "5:1107838572209926702",
       "name": "Subject",
       "properties": [
         {
@@ -172,26 +237,37 @@
           "id": "3:5800660077900968037",
           "name": "subjectName",
           "type": 9
+        },
+        {
+          "id": "4:3064716034671020343",
+          "name": "classRelationId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "11:589626067979143932",
+          "relationTarget": "ClassModel"
+        },
+        {
+          "id": "5:1107838572209926702",
+          "name": "classId",
+          "type": 9
         }
       ],
-      "relations": [
-        {
-          "id": "5:623756514686240118",
-          "name": "exams",
-          "targetId": "2:4240947466676987661"
-        }
-      ]
+      "relations": []
     }
   ],
   "lastEntityId": "5:5168867376406878954",
-  "lastIndexId": "5:56633869664900096",
-  "lastRelationId": "5:623756514686240118",
+  "lastIndexId": "11:589626067979143932",
+  "lastRelationId": "6:6776949172144395563",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
-  "retiredRelationUids": [],
+  "retiredPropertyUids": [
+    8803990178385988372
+  ],
+  "retiredRelationUids": [
+    623756514686240118
+  ],
   "version": 1
 }
